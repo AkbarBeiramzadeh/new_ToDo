@@ -1,4 +1,80 @@
-body{
-    background: burlywood;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
+body {
+    background: #212121;
+}
+
+a {
+    text-decoration: none;
+}
+
+.navbar-container {
+    width: 100%;
+    height: 70px;
+    background: #7373ff;
+    display: flex;
+}
+
+
+.navbar-left{
+    width: 25%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+.login_button{
+    margin-left: 40px;
+}
+.login_button:hover{
+    transition: 0.2s;
+    color: white;
+}
+.register_button{
+    margin-left: 20px;
+}
+.register_button:hover{
+    transition: 0.2s;
+    color: white;
+}
+
+.navbar-center{
+    display: flex;
+    width: 50%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+.page_header{
+    font-size: 35px;
+    color: aliceblue;
+}
+.navbar-right{
+    width: 25%;
+    height: 100%;
+    margin-right: 40px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+}
+
+.logout_button:hover{
+    transition: 0.2s;
+    color: #fa2525;
+}
+
+.main-container {
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.tasks-container{
+    width: 50%;
+    background: #f87755;
+}
