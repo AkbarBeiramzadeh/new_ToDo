@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, TemplateView, DeleteView, UpdateView, CreateView
-
+from django.shortcuts import redirect
 from .models import Task
 
 
@@ -32,7 +32,14 @@ class TaskDeleteView(DeleteView):
 
 
 class TaskChangeStateView(UpdateView):
-    pass
+    model = Task
+    success_url = reverse_lazy("todo:task_list")
+
+    def get(self, request, *args, **kwargs):
+        object = Task.objects.get(id=kwargs.get("pk"))
+        object.state = kwargs.get("state")
+        object.save()
+        return redirect(self.success_url)
 
 
 class TaskCreateView(LoginRequiredMixin, CreateView):
