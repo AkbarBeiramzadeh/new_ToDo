@@ -1,8 +1,10 @@
 from django.shortcuts import render
+from django.views.generic import ListView, TemplateView
+
 
 # Create your views here.
-class TaskListView:
-    pass
+class TaskListView(TemplateView):
+    template_name = 'todo/task_list.html'
 
 
 class TaskEditView:
