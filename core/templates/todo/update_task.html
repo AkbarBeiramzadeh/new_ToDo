@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Task Edit
+{% endblock %}
+
+{% block content %}
+    <div class="task-update">
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="edit">
+        </form>
+    </div>
+
+{% endblock %}

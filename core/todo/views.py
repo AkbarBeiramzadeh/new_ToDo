@@ -3,6 +3,8 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, TemplateView, DeleteView, UpdateView, CreateView
 from django.shortcuts import redirect
+
+from .forms import TaskEditForm
 from .models import Task
 
 
@@ -17,7 +19,10 @@ class TaskListView(ListView):
 
 
 class TaskEditView(UpdateView):
-    pass
+    model = Task
+    template_name = 'todo/update_task.html'
+    success_url = reverse_lazy('todo:task_list')
+    form_class = TaskEditForm
 
 
 class TaskDeleteView(DeleteView):
