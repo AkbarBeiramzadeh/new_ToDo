@@ -4,11 +4,13 @@ from django.views.generic import ListView, TemplateView
 from .models import Task
 
 
+
 # Create your views here.
 class TaskListView(ListView):
     model = Task
     template_name = 'todo/task_list.html'
     context_object_name = 'tasks'
+
 
 
 

@@ -78,3 +78,26 @@ a {
     width: 50%;
     background: #f87755;
 }
+
+.add-task-container{
+    width: 100%;
+
+}
+.add-task-form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+}
+.add-task-title-edit-line{
+    width: 80%;
+    margin-right: 10px;
+}
+
+.task-title-container{
+    background: cadetblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+}

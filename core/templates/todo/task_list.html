@@ -8,10 +8,20 @@
 
     <div class="main-container">
         <div class="tasks-container">
-            {% for task in tasks %}
-                {{ task.title }}
-            {% endfor %}
-         </div>
+            <div class="add-task-container">
+                <form class="add-task-form" style="width: 100%" action="" method="post">
+                    <input class="add-task-title-edit-line" type="text" name="title">
+                    <input type="submit" value="Add">
+                </form>
+            </div>
+            <div class="task-title-container">
+                {% for task in tasks %}
+                    {{ task.title }}
+                {% endfor %}
+            </div>
+
+
+        </div>
     </div>
 
 
