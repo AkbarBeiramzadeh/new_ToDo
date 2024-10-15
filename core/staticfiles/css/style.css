@@ -20,39 +20,45 @@ a {
 }
 
 
-.navbar-left{
+.navbar-left {
     width: 25%;
     height: 100%;
     display: flex;
     align-items: center;
 }
-.login_button{
+
+.login_button {
     margin-left: 40px;
 }
-.login_button:hover{
-    transition: 0.2s;
-    color: white;
-}
-.register_button{
-    margin-left: 20px;
-}
-.register_button:hover{
+
+.login_button:hover {
     transition: 0.2s;
     color: white;
 }
 
-.navbar-center{
+.register_button {
+    margin-left: 20px;
+}
+
+.register_button:hover {
+    transition: 0.2s;
+    color: white;
+}
+
+.navbar-center {
     display: flex;
     width: 50%;
     height: 100%;
     justify-content: center;
     align-items: center;
 }
-.page_header{
+
+.page_header {
     font-size: 35px;
     color: aliceblue;
 }
-.navbar-right{
+
+.navbar-right {
     width: 25%;
     height: 100%;
     margin-right: 40px;
@@ -62,7 +68,7 @@ a {
 
 }
 
-.logout_button:hover{
+.logout_button:hover {
     transition: 0.2s;
     color: #fa2525;
 }
@@ -74,30 +80,43 @@ a {
     justify-content: center;
 }
 
-.tasks-container{
+.tasks-container {
     width: 50%;
-    background: #f87755;
+    background: #022d34;
 }
 
-.add-task-container{
+.add-task-container {
     width: 100%;
 
 }
-.add-task-form{
+
+.add-task-form {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 30px;
 }
-.add-task-title-edit-line{
+
+.add-task-title-edit-line {
     width: 80%;
     margin-right: 10px;
 }
 
-.task-title-container{
-    background: cadetblue;
+.task-container{
     display: flex;
     justify-content: center;
-    align-items: center;
     margin: 5px;
+    background: #f38989;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.task_title{
+    width: 70%;
+    padding: 5px;
+}
+.task_title_done{
+    width: 70%;
+    padding: 5px;
+    color: darkblue;
 }

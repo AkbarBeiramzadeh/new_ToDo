@@ -1,8 +1,7 @@
 from django.shortcuts import render
-from django.views.generic import ListView, TemplateView
+from django.views.generic import ListView, TemplateView, DeleteView, UpdateView
 
 from .models import Task
-
 
 
 # Create your views here.
@@ -12,19 +11,13 @@ class TaskListView(ListView):
     context_object_name = 'tasks'
 
 
-
-
-class TaskEditView:
+class TaskEditView(UpdateView):
     pass
 
 
-class TaskDeleteView:
+class TaskDeleteView(DeleteView):
     pass
 
 
-class TaskUpdateView:
-    pass
-
-
-class TaskChangeStateView:
+class TaskChangeStateView(UpdateView):
     pass

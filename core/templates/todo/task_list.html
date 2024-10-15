@@ -14,11 +14,28 @@
                     <input type="submit" value="Add">
                 </form>
             </div>
-            <div class="task-title-container">
+
                 {% for task in tasks %}
-                    {{ task.title }}
-                {% endfor %}
-            </div>
+                    <div class="task-container">
+                        {% if task.state == "ToDo" %}
+                        	<p class="task_title">{{ task.title }}</p>
+                            {% else %}
+                            <strike class="task_title_done">{{ task.title }}</strike>
+                        {% endif %}
+
+                        <div class="control_buttons">
+
+                            <a href="{% url 'todo:task_delete' pk=task.id %}"><img style="width: 20px;height: 20px;" src="../../media/trash.png" alt="Delete"></a>
+                            <a href="{% url 'todo:task_edit' pk=task.id %}"><img style="width: 20px;height: 20px;" src="../../media/edit.png" alt="Edit"></a>
+                            <a href="{% url 'todo:task_change_state' pk=task.id state='ToDo' %}">ToDo</a>
+                            <a href="{% url 'todo:task_change_state' pk=task.id state='Done' %}">Done</a>
+                        </div>
+
+                    </div>
+                    {% endfor %}
+
+
+
 
 
         </div>
