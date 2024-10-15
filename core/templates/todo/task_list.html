@@ -9,10 +9,13 @@
     <div class="main-container">
         <div class="tasks-container">
             <div class="add-task-container">
-                <form class="add-task-form" style="width: 100%" action="" method="post">
-                    <input class="add-task-title-edit-line" type="text" name="title">
+                <form class="add-task-form" style="width: 100%" action="{% url 'todo:task_create' %}" method="post">
+
+                    <input  class="add-task-title-edit-line" type="text" name="title">
                     <input type="submit" value="Add">
+                    {% csrf_token %}
                 </form>
+                
             </div>
 
                 {% for task in tasks %}

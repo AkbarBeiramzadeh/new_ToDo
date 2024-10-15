@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, TemplateView, DeleteView, UpdateView
+from django.views.generic import ListView, TemplateView, DeleteView, UpdateView, CreateView
 
 from .models import Task
 
@@ -29,3 +29,13 @@ class TaskDeleteView(DeleteView):
 
 class TaskChangeStateView(UpdateView):
     pass
+
+
+class TaskCreateView(CreateView):
+    model = Task
+    fields = ['title']
+    success_url = reverse_lazy('todo:task_list')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(TaskCreateView, self).form_valid(form)
