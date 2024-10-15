@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Delete Task
+{% endblock %}
+
+{% block content %}
+    <div style="text-align: center;margin: 10px;">
+    <h3 style="color: aliceblue">Do you want to DELETE ? <span style="color: #fa2525">{{ task.title }}</span></h3>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input style="width: 120px;background-color: #fa2525;color: aliceblue;margin-top: 5px;" type="submit" value="delete">
+    </form>
+    </div>
+{% endblock %}

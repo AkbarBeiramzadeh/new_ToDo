@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views.generic import ListView, TemplateView, DeleteView, UpdateView
 
 from .models import Task
@@ -16,7 +17,14 @@ class TaskEditView(UpdateView):
 
 
 class TaskDeleteView(DeleteView):
-    pass
+    model = Task
+    success_url = reverse_lazy("todo:task_list")
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return self.model.objects.filter(user=self.request.user)
 
 
 class TaskChangeStateView(UpdateView):
