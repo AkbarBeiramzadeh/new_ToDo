@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, TemplateView, DeleteView, UpdateView, CreateView
@@ -10,6 +11,9 @@ class TaskListView(ListView):
     model = Task
     template_name = 'todo/task_list.html'
     context_object_name = 'tasks'
+
+    def get_queryset(self):
+        return self.model.objects.filter(user=self.request.user)
 
 
 class TaskEditView(UpdateView):
@@ -31,7 +35,7 @@ class TaskChangeStateView(UpdateView):
     pass
 
 
-class TaskCreateView(CreateView):
+class TaskCreateView(LoginRequiredMixin, CreateView):
     model = Task
     fields = ['title']
     success_url = reverse_lazy('todo:task_list')

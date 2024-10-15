@@ -1,7 +1,11 @@
 <div class="navbar-container">
     <div class="navbar-left">
-        <a class="login_button" href="">Login</a>
-        <a class="register_button" href="">Register</a>
+        {% if request.user.is_authenticated %}
+        	<p style="color: white;margin-left: 20px;">{{ request.user }}</p>
+        {% else %}
+            <a class="login_button" href="">Login</a>
+            <a class="register_button" href="">Register</a>
+        {% endif %}
     </div>
 
 

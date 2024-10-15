@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-
+{% if request.user.is_authenticated %}
     <div class="main-container">
         <div class="tasks-container">
             <div class="add-task-container">
@@ -15,7 +15,7 @@
                     <input type="submit" value="Add">
                     {% csrf_token %}
                 </form>
-                
+
             </div>
 
                 {% for task in tasks %}
@@ -44,5 +44,5 @@
         </div>
     </div>
 
-
+{% endif %}
 {% endblock %}
