@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container-login">
+    <form style="color: aqua;margin-top: 10px;" action="" method="post" novalidate>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input style="background: green;width: 260px;margin-top: 5px" type="submit" value="Register">
+    </form>
+    </div>
+{% endblock %}

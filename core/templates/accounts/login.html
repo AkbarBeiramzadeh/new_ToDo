@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Login/Register
+{% endblock %}
+
+{% block content %}
+    <div class="container-login">
+        <form style="margin-top: 10px;margin-bottom: 10px;color: aquamarine" action="{% url 'accounts:user_login' %}" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input style="width: 230px;margin-top: 10px;background: green" type="submit" value="Login">
+        </form>
+    </div>
+    <br>
+    <p style="text-align: center;color: aliceblue">if you don't have an account you can <a style="color: aqua" href="{% url 'accounts:user_register' %}">Register</a></p>
+
+{% endblock %}

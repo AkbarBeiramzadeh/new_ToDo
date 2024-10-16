@@ -2,19 +2,24 @@
     <div class="navbar-left">
         {% if request.user.is_authenticated %}
         	<p style="color: white;margin-left: 20px;">{{ request.user }}</p>
-        {% else %}
-            <a class="login_button" href="">Login</a>
-            <a class="register_button" href="">Register</a>
+
         {% endif %}
     </div>
 
-
-    <div class="navbar-center">
+    {% if request.user.is_authenticated %}
+    	    <div class="navbar-center">
         <h4 class="page_header">Task List</h4>
     </div>
+        {% else %}
+        <div class="navbar-center">
+        <h4 class="page_header">Login / Register</h4>
+        </div>
+    {% endif %} 
 
 
+    {% if request.user.is_authenticated %}
     <div class="navbar-right">
-        <a class="logout_button" href="">Logout</a>
+        <a class="logout_button" href="{% url 'accounts:user_logout' %}">Logout</a>
     </div>
+    {% endif %}
 </div>
