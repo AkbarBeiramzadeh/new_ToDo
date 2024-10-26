@@ -1,7 +1,7 @@
 services:
-  backend:
+  backend_todo:
     build: .
-    container_name: backend
+    container_name: backend_todo
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - ./core:/app
