@@ -1,7 +1,6 @@
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
+from rest_framework.permissions import IsAuthenticated
 
-from .filters import IsOwnerFilterBackend
 from django_filters.rest_framework import DjangoFilterBackend
 from .permissions import IsTaskOwner
 from .serializers import TaskSerializer
@@ -17,5 +16,5 @@ class TaskModelViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['state']
     ordering_fields = ['created_at']
-    search_fields = ['title','state' ]
+    search_fields = ['title', 'state']
     pagination_class = DefaultPagination
