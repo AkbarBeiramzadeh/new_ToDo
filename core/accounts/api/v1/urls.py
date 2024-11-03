@@ -9,6 +9,6 @@ urlpatterns = [
 
     # login token
     path('token/login/', views.CustomAuthToken.as_view(), name='token-login'),
-    # path('token/logout/', views.CustomDiscardAuthToken.as_view(), name='token-logout'),
+    path('token/logout/', views.CustomDiscardAuthToken.as_view(), name='token-logout'),
 
 ]
