@@ -5,7 +5,8 @@ from rest_framework import status
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from .serializers import RegistrationSerializer, CustomAuthTokenSerializer, CustomTokenObtainPairSerializer, \
-    ChangePasswordSerializer, ActivationResendSerializer
+    ChangePasswordSerializer, ActivationResendSerializer, PasswordResetRequestEmailSerializer, \
+    PasswordResetTokenVerificationSerializer, SetNewPasswordSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 
@@ -19,6 +20,10 @@ import jwt
 from jwt import ExpiredSignatureError, InvalidSignatureError
 from decouple import config
 from django.conf import settings
+from django.contrib.sites.shortcuts import get_current_site
+from .. import utils
+
+from rest_framework import mixins
 
 User = get_user_model()
 
@@ -135,3 +140,45 @@ class ActivationResendApiView(generics.GenericAPIView):
         refresh = RefreshToken.for_user(user)
 
         return str(refresh.access_token)
+
+
+class PasswordResetRequestEmailApiView(generics.GenericAPIView):
+    serializer_class = PasswordResetRequestEmailSerializer
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data["user"]
+        token = RefreshToken.for_user(user).access_token
+        relativeLink = "/accounts/reset-password" #reverse('accounts:password-reset-confirm')
+        current_site = get_current_site(
+            request=request).domain
+        absurl = 'http://'+current_site+relativeLink+"?token="+str(token)
+        # email_body = 'Hi '+user.email + \
+        #         'Use the link below to reset your password \n' + absurl
+        # data = {'email_body': email_body, 'to_email': user.email,
+        #             'email_subject': 'Verify your email'}
+
+        # Util.send_email(data)
+        data = {'email':user.email,"link":absurl,"site":current_site}
+        utils.Util.send_templated_email('email/reset_password_template.html',data)
+        return Response({'success': 'We have sent you a link to reset your password'}, status=status.HTTP_200_OK)
+
+
+class PasswordResetTokenValidateApiView(mixins.RetrieveModelMixin, generics.GenericAPIView):
+    serializer_class = PasswordResetTokenVerificationSerializer
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        return Response({"detail":"Token is valid"},status=status.HTTP_200_OK)
+
+
+class PasswordResetSetNewApiView(generics.GenericAPIView):
+    serializer_class = SetNewPasswordSerializer
+
+    def patch(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response({'detail': 'Password reset successfully'}, status=status.HTTP_200_OK)

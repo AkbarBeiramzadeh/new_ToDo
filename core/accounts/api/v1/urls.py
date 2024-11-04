@@ -20,8 +20,11 @@ urlpatterns = [
     path('jwt/refresh/', TokenRefreshView.as_view(), name='jwt-refresh'),
     path('jwt/verify/', TokenVerifyView.as_view(), name='jwt-verify'),
 
-    # change password
+    # password
     path('change-password/', views.ChangePasswordApiView.as_view(), name='change-password'),
+    path("reset-password/", views.PasswordResetRequestEmailApiView.as_view(), name="reset-password-request"),
+    path("reset-password/validate-token/", views.PasswordResetTokenValidateApiView.as_view(), name="reset-password-validate"),
+    path("reset-password/set-password/", views.PasswordResetSetNewApiView.as_view(), name="reset-password-confirm"),
 
     # activation
     path('activation/confirm/<str:token>', views.ActivationApiView.as_view(), name='activation'),
