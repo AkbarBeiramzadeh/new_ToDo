@@ -1,6 +1,5 @@
 from rest_framework.test import APIClient
 import pytest
-from accounts.models import User
 from todo.forms import TaskEditForm
 
 
@@ -8,12 +7,6 @@ from todo.forms import TaskEditForm
 def api_client():
     client = APIClient()
     return client
-
-
-@pytest.fixture
-def common_user():
-    user = User.objects.create_user(email="ab@ab.com", password="1020")
-    return user
 
 
 class TestTodoForm:
