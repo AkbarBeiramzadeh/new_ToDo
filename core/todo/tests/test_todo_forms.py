@@ -1,6 +1,5 @@
 from rest_framework.test import APIClient
 import pytest
-from todo.models import Task
 from accounts.models import User
 from todo.forms import TaskEditForm
 
