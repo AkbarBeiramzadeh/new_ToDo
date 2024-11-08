@@ -28,6 +28,18 @@ def authed_client(api_client, user):
     return client
 
 
+@pytest.fixture
+def verified_client_data(api_client, user):
+    url = reverse('accounts:api-v1:registration')
+    data = {
+        'email': 'newuser@example.com',
+        'password': 'AsAs1020',
+        'password1': 'AsAs1020'
+    }
+    response = api_client.post(url, data=data)
+    return response.data
+
+
 @pytest.mark.django_db
 class TestAccountsApi:
     def test_registration(self, api_client):
@@ -50,13 +62,30 @@ class TestAccountsApi:
         response = api_client.post(url, data=data)
         assert response.status_code == 400
 
+    def test_token_logout(self, api_client):
+        url = reverse('accounts:api-v1:registration')
+        data = {
+            'email': 'newuser@example.com',
+            'password': 'AsAs1020',
+            'password1': 'AsAs1020'
+        }
+        register_response = api_client.post(url, data=data)
+        assert register_response.status_code == 201
 
-# def test_token_logout(authed_client):
-#     url = reverse('token-logout')
-#     response = client.post(url)
-#     assert response.status_code == 204
-#
-#
+        url_token_login = reverse('accounts:api-v1:token-login')
+        user_obj = User.objects.get(email='newuser@example.com')
+        user_obj.is_verified = True
+        user_obj.save()
+        token_login_response = api_client.post(url_token_login,
+                                               data={'email': data.get('email'), 'password': data.get('password')})
+
+        assert token_login_response.status_code == 200
+
+        api_client.force_authenticate(user=user_obj)
+        url_token_logout = reverse('accounts:api-v1:token-logout')
+        response = api_client.post(url_token_logout)
+        assert response.status_code == 204
+
 # def test_jwt_create(authed_client):
 #     url = reverse('jwt-create')
 #     response = client.post(url)
