@@ -62,7 +62,9 @@ class TestTaskApi:
         response = api_client.post(url, data)
         assert response.status_code == 401
 
-    def test_create_task_invalid_data_response_400_status(self, api_client, common_user):
+    def test_create_task_invalid_data_response_400_status(
+        self, api_client, common_user
+    ):
         url = reverse("todo:api-v1:task-list")
         data = {
             "state": "ToDo",
@@ -116,18 +118,18 @@ class TestTaskApi:
 
     def test_delete_task(self, api_client, common_user, task_obj):
         api_client.force_authenticate(common_user)
-        url = reverse('todo:api-v1:task-detail', kwargs={'pk': task_obj.pk})
+        url = reverse("todo:api-v1:task-detail", kwargs={"pk": task_obj.pk})
         response = api_client.delete(url)
         assert response.status_code == 204
         assert Task.objects.filter(pk=task_obj.pk).exists() is False
 
     def test_delete_task_not_found(self, api_client, common_user):
         api_client.force_authenticate(user=common_user)
-        url = reverse('todo:api-v1:task-detail', kwargs={'pk': 9999})
+        url = reverse("todo:api-v1:task-detail", kwargs={"pk": 9999})
         response = api_client.delete(url)
         assert response.status_code == 404
 
     def test_delete_task_with_anonymous_user(self, api_client, common_user):
-        url = reverse('todo:api-v1:task-detail', kwargs={'pk': 9999})
+        url = reverse("todo:api-v1:task-detail", kwargs={"pk": 9999})
         response = api_client.delete(url)
         assert response.status_code == 401

@@ -11,9 +11,11 @@ def api_client():
 
 class TestTodoForm:
     def test_todo_edit_form_with_valid_data(self):
-        form = TaskEditForm(data={
-            "title": "test",
-        })
+        form = TaskEditForm(
+            data={
+                "title": "test",
+            }
+        )
         assert form.is_valid() is True
 
     def test_todo_edit_form_with_no_data(self):

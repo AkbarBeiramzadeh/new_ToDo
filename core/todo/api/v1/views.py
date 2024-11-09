@@ -13,8 +13,12 @@ class TaskModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, IsTaskOwner]
     serializer_class = TaskSerializer
     queryset = Task.objects.all()
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['state']
-    ordering_fields = ['created_at']
-    search_fields = ['title', 'state']
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
+    filterset_fields = ["state"]
+    ordering_fields = ["created_at"]
+    search_fields = ["title", "state"]
     pagination_class = DefaultPagination
