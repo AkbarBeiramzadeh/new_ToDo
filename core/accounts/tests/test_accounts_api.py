@@ -24,24 +24,6 @@ def user(api_client):
     return user
 
 
-@pytest.fixture
-def authed_client(api_client, user):
-    client = api_client.force_authenticate(user=user)
-    return client
-
-
-@pytest.fixture
-def verified_client_data(api_client, user):
-    url = reverse('accounts:api-v1:registration')
-    data = {
-        'email': 'newuser@example.com',
-        'password': 'AsAs1020',
-        'password1': 'AsAs1020'
-    }
-    response = api_client.post(url, data=data)
-    return response.data
-
-
 @pytest.mark.django_db
 class TestAccountsApi:
     def test_registration(self, api_client):
@@ -97,7 +79,6 @@ class TestAccountsApi:
 
     def test_jwt_refresh(self, api_client, user):
         url = reverse('accounts:api-v1:jwt-refresh')
-        # api_client.force_authenticate(user=user)
         refresh_token = RefreshToken.for_user(user)
         response = api_client.post(url, {'refresh': str(refresh_token)})
         assert response.status_code == 200
@@ -127,19 +108,52 @@ class TestAccountsApi:
         response = api_client.post(url, {'token': 'invalid-token'})
         assert response.status_code == 400
 
-# def test_reset_password_confirm(client):
-#     url = reverse('reset-password-confirm')
-#     response = client.post(url, {'token': 'some-valid-token', 'new_password': 'newpassword123'})
-#     assert response.status_code == 204
-#
-#
-# def test_activation(client):
-#     url = reverse('activation', kwargs={'token': 'some-valid-token'})
-#     response = client.post(url)
-#     assert response.status_code == 204
-#
-#
-# def test_activation_resend(client):
-#     url = reverse('activation-resend')
-#     response = client.post(url)
-#     assert response.status_code == 204
+    def test_reset_password_confirm(self, api_client, user):
+        api_client.force_authenticate(user=user)
+        url_get_jwt_token = reverse('accounts:api-v1:jwt-create')
+        data = {'email': user.email, 'password': 'AsAs1020'}
+        response = api_client.post(url_get_jwt_token, data=data)
+
+        assert 'access' in response.data
+
+        url = reverse('accounts:api-v1:reset-password-confirm')
+        response = api_client.patch(url, {'token': response.data['access'], 'password': 'newPassword123',
+                                          'password1': 'newPassword123'})
+        assert response.status_code == 200
+
+    def test_activation(self, api_client, user):
+        url_get_jwt_token = reverse('accounts:api-v1:jwt-create')
+        data = {'email': user.email, 'password': 'AsAs1020'}
+        response = api_client.post(url_get_jwt_token, data=data)
+
+        url = reverse('accounts:api-v1:activation', kwargs={'token': response.data['access']})
+        response = api_client.get(url)
+        assert response.status_code == 200
+
+    def test_activation_resend(self, api_client):
+        User.objects.create_user(email='a1@email.com', password='123')
+        url = reverse('accounts:api-v1:activation-resend')
+        data = {
+            'email': 'a1@email.com'
+        }
+        response = api_client.post(url, data=data)
+        assert response.status_code == 200
+
+    def test_activation_resend_with_anonymous_user(self, api_client):
+        url = reverse('accounts:api-v1:activation-resend')
+        data = {
+            'email': 'anonymouse_user@email.com'
+        }
+        response = api_client.post(url, data=data)
+        assert response.status_code == 400
+
+    def test_activation_resend_with_user_verified_already(self, api_client):
+        user = User.objects.create_user(email='a1@email.com', password='123')
+        user.is_verified = True
+        user.save()
+        url = reverse('accounts:api-v1:activation-resend')
+        data = {
+            'email': 'a1@email.com'
+        }
+        response = api_client.post(url, data=data)
+        assert response.status_code == 400
