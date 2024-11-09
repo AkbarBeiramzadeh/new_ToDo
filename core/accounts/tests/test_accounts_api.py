@@ -12,13 +12,15 @@ def api_client():
 
 
 @pytest.fixture
-def user():
+def user(api_client):
     user = User.objects.create_user(
         email='test@example.com',
         password='AsAs1020',
 
     )
     user.is_verified = True
+    user.save()
+    api_client.force_authenticate(user=user)
     return user
 
 
@@ -86,47 +88,45 @@ class TestAccountsApi:
         response = api_client.post(url_token_logout)
         assert response.status_code == 204
 
-# def test_jwt_create(authed_client):
-#     url = reverse('jwt-create')
-#     response = client.post(url)
-#     assert response.status_code == 200
-#     assert 'access' in response.data
-#     assert 'refresh' in response.data
-#
-#
-# def test_jwt_refresh(authed_client):
-#     url = reverse('jwt-refresh')
-#     refresh_token = RefreshToken.for_user(authed_client.user)
-#     response = client.post(url, {'refresh': str(refresh_token)})
-#     assert response.status_code == 200
-#     assert 'access' in response.data
-#
-#
-# def test_jwt_verify(authed_client):
-#     url = reverse('jwt-verify')
-#     access_token = RefreshToken.for_user(authed_client.user)
-#     response = client.post(url, {'token': str(access_token)})
-#     assert response.status_code == 200
-#
-#
-# def test_change_password(authed_client):
-#     url = reverse('change-password')
-#     response = client.post(url, {'old_password': 'testpassword', 'new_password': 'newpassword123'})
-#     assert response.status_code == 204
-#
-#
-# def test_reset_password_request(client):
-#     url = reverse('reset-password-request')
-#     response = client.post(url, {'email': 'test@example.com'})
-#     assert response.status_code == 204
-#
-#
-# def test_reset_password_validate_token(client):
-#     url = reverse('reset-password-validate')
-#     response = client.post(url, {'token': 'some-valid-token'})
-#     assert response.status_code == 200
-#
-#
+    def test_jwt_create(self, api_client, user):
+        url = reverse('accounts:api-v1:jwt-create')
+        response = api_client.post(url, data={'email': user.email, 'password': 'AsAs1020'})
+        assert response.status_code == 200
+        assert 'access' in response.data
+        assert 'refresh' in response.data
+
+    def test_jwt_refresh(self, api_client, user):
+        url = reverse('accounts:api-v1:jwt-refresh')
+        # api_client.force_authenticate(user=user)
+        refresh_token = RefreshToken.for_user(user)
+        response = api_client.post(url, {'refresh': str(refresh_token)})
+        assert response.status_code == 200
+        assert 'access' in response.data
+
+    def test_jwt_verify(self, api_client, user):
+        url = reverse('accounts:api-v1:jwt-verify')
+        access_token = RefreshToken.for_user(user)
+        response = api_client.post(url, {'token': str(access_token)})
+        assert response.status_code == 200
+
+    def test_change_password(self, api_client, user):
+        url = reverse('accounts:api-v1:change-password')
+        response = api_client.put(url, {'old_password': 'AsAs1020',
+                                        'new_password': 'newpassword123',
+                                        'new_password1': 'newpassword123',
+                                        })
+        assert response.status_code == 200
+
+    def test_reset_password_request(self, api_client, user):
+        url = reverse('accounts:api-v1:reset-password-request')
+        response = api_client.post(url, {'email': 'test@example.com'})
+        assert response.status_code == 200
+
+    def test_reset_password_validate_token_with_invalid_token(self, api_client):
+        url = reverse('accounts:api-v1:reset-password-validate')
+        response = api_client.post(url, {'token': 'invalid-token'})
+        assert response.status_code == 400
+
 # def test_reset_password_confirm(client):
 #     url = reverse('reset-password-confirm')
 #     response = client.post(url, {'token': 'some-valid-token', 'new_password': 'newpassword123'})
