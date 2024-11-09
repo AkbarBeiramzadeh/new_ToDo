@@ -1,7 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, TemplateView, DeleteView, UpdateView, CreateView
+from django.views.generic import (
+    ListView,
+    TemplateView,
+    DeleteView,
+    UpdateView,
+    CreateView,
+)
 from django.shortcuts import redirect
 
 from .forms import TaskEditForm
@@ -9,10 +15,10 @@ from .models import Task
 
 
 # Create your views here.
-class TaskListView(LoginRequiredMixin,ListView):
+class TaskListView(LoginRequiredMixin, ListView):
     model = Task
-    template_name = 'todo/task_list.html'
-    context_object_name = 'tasks'
+    template_name = "todo/task_list.html"
+    context_object_name = "tasks"
 
     def get_queryset(self):
         return self.model.objects.filter(user=self.request.user)
@@ -20,8 +26,8 @@ class TaskListView(LoginRequiredMixin,ListView):
 
 class TaskEditView(UpdateView):
     model = Task
-    template_name = 'todo/update_task.html'
-    success_url = reverse_lazy('todo:task_list')
+    template_name = "todo/update_task.html"
+    success_url = reverse_lazy("todo:task_list")
     form_class = TaskEditForm
 
 
@@ -49,8 +55,8 @@ class TaskChangeStateView(UpdateView):
 
 class TaskCreateView(LoginRequiredMixin, CreateView):
     model = Task
-    fields = ['title']
-    success_url = reverse_lazy('todo:task_list')
+    fields = ["title"]
+    success_url = reverse_lazy("todo:task_list")
 
     def form_valid(self, form):
         form.instance.user = self.request.user

@@ -26,27 +26,20 @@ class UserRegisterView(View):
 
     def get(self, request):
         form = self.form_class
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {"form": form})
 
     def post(self, request):
         form = self.form_class(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            User.objects.create_user(cd['email'],
-                                     cd['password1'])
+            User.objects.create_user(cd["email"], cd["password1"])
 
-            return redirect('todo:task_list')
+            return redirect("todo:task_list")
         else:
-            return render(request, self.template_name, {'form': form})
+            return render(request, self.template_name, {"form": form})
 
 
-
-
-
-
-
-
-class UserLogoutView(LoginRequiredMixin,View):
+class UserLogoutView(LoginRequiredMixin, View):
     def get(self, request):
         logout(request)
-        return redirect(reverse_lazy('accounts:user_login'))
+        return redirect(reverse_lazy("accounts:user_login"))
