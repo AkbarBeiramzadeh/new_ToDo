@@ -4,6 +4,7 @@ from accounts.models import User
 from todo.models import Task
 import random
 
+# I have used `state` field instead of `complete` field
 state_list = [
     "ToDo",
     "Done",
