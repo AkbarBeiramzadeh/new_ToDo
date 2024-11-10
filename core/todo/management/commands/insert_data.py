@@ -21,7 +21,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # user = User.objects.get(email="admin@admin.com")
         user = User.objects.create_user(email=self.fake.email(), password="Test@123456")
-        for _ in range(10):
+        for _ in range(5):
             Task.objects.create(user=user,
                                 title=self.fake.paragraph().split(" ")[0],
                                 state=random.choice(state_list)
