@@ -5,11 +5,15 @@ from django.views.generic import (
     DeleteView,
     UpdateView,
     CreateView,
+    TemplateView,
 )
 from django.shortcuts import redirect
 
 from .forms import TaskEditForm
 from .models import Task
+
+from .tasks import delete_done_tasks
+from django.http import HttpResponse
 
 
 # Create your views here.
@@ -59,3 +63,8 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super(TaskCreateView, self).form_valid(form)
+
+
+def task_delete_done(request):
+    delete_done_tasks.delay()
+    return HttpResponse("<h1>Delete done tasks</h1>")

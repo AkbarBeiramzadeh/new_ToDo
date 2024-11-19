@@ -1,8 +1,7 @@
 from django.db import models
-from django.contrib.auth import get_user_model
+# from django.contrib.auth import get_user_model
 from django.urls import reverse
-
-User = get_user_model()
+from accounts.models import User
 
 
 class Task(models.Model):

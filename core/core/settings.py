@@ -37,15 +37,15 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "accounts.apps.AccountsConfig",
-    "todo.apps.TodoConfig",
+    "todo",
     "rest_framework",
     "django_filters",
     "drf_yasg",
     "rest_framework.authtoken",
     "rest_framework_simplejwt",
     "mail_templated",
+    # 'django_celery_beat',
 ]
-
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -156,3 +156,8 @@ EMAIL_HOST = "smtp4dev"
 EMAIL_HOST_USER = ""
 EMAIL_HOST_PASSWORD = ""
 EMAIL_PORT = 25
+
+# celery configs
+CELERY_BROKER_URL = 'redis://redis:6379/1'
+# CELERYBEAT_MAX_LOOP_INTERVAL = 600
+
