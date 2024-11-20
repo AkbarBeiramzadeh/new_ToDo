@@ -16,4 +16,5 @@ urlpatterns = [
         name="task_change_state",
     ),
     path("api/v1/", include("todo.api.v1.urls")),
+
 ]
