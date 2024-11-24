@@ -5,7 +5,6 @@ from django.views.generic import (
     DeleteView,
     UpdateView,
     CreateView,
-    TemplateView,
 )
 from django.shortcuts import redirect
 

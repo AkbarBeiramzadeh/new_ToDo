@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-q#(8!xl#nvhw=5ntvz*8!rp)mvhv0a6!7_wgv)j*%=^xt*y)h=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*','82.115.18.149']
+ALLOWED_HOSTS = ['*', '82.115.18.149']
 
 # Application definition
 
@@ -160,4 +160,3 @@ EMAIL_PORT = 25
 # celery configs
 CELERY_BROKER_URL = 'redis://redis:6379/1'
 # CELERYBEAT_MAX_LOOP_INTERVAL = 600
-
