@@ -159,4 +159,3 @@ EMAIL_PORT = 25
 
 # celery configs
 CELERY_BROKER_URL = 'redis://redis:6379/1'
-# CELERYBEAT_MAX_LOOP_INTERVAL = 600
